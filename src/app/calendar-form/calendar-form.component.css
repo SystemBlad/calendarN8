@@ -1,0 +1,28 @@
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+  width: 2rem;
+}
+.custom-day:hover, .custom-day.focused {
+  background-color: #e6e6e6;
+}
+.weekend {
+  background-color: yellow;
+}
+.weekday {
+  background-color: #71dd8a;
+}
+.hidden {
+  display: none;
+}
+
+[_nghost-c2] {
+  background-color: #c6c6c4;
+}
+
+.ngb-dp-months[_ngcontent-c2] {
+  display: inline-block;
+  /* display: flex; */
+}

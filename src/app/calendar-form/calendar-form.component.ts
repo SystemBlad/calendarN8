@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {InputData} from '../input-data';
-import {NgbDateAdapter, NgbDateNativeAdapter} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateAdapter, NgbDateNativeAdapter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -12,7 +12,7 @@ import {NgbDateAdapter, NgbDateNativeAdapter} from '@ng-bootstrap/ng-bootstrap';
 
 export class CalendarFormComponent implements OnInit {
   inputData: InputData = {
-    startDate: new Date(),
+    startDate: null,
     numberOfDays: null,
     countryCode: 'US',
     dateAfter: null,
@@ -39,37 +39,45 @@ export class CalendarFormComponent implements OnInit {
 
   onSubmit() {
     function NumberOfMonths(date1, date2) {
-      let Nomonths;
-      Nomonths = (date2.getFullYear() - date1.getFullYear()) * 12;
-      Nomonths -= date1.getMonth() + 1;
-      Nomonths += date2.getMonth() + 1; // we should add + 1 to get correct month number
-      return Nomonths <= 0 ? 1 : Nomonths + 1;
+      const totalDiff = ((date2.getFullYear() - date1.getFullYear()) * 12) + (date2.getMonth() - date1.getMonth());
+      return totalDiff <= 0 ? 1 : totalDiff + 1;
     }
 
     function addDays(date, days) {
-      let result = new Date(date);
+      const result = new Date(date);
       result.setDate(result.getDate() + days);
       return result;
     }
 
-    if (this.inputData.numberOfDays < 1 || this.inputData.numberOfDays > 1000000) {
+    if (this.inputData.numberOfDays < 1 || this.inputData.numberOfDays > 3650) {
       this.inputData.numberOfDays = null;
     } else {
       this.inputData.dateAfter = addDays(this.inputData.startDate, this.inputData.numberOfDays - 1);
       this.inputData.monthsAfter = NumberOfMonths(this.inputData.startDate, this.inputData.dateAfter);
-
+      this.maxDate = {
+        year: this.inputData.dateAfter.getFullYear(),
+        month: this.inputData.dateAfter.getMonth() + 1,
+        day: this.inputData.dateAfter.getDate()
+      };
       this.minDate = {
         year: this.inputData.startDate.getFullYear(),
         month: this.inputData.startDate.getMonth() + 1,
         day: this.inputData.startDate.getDate()
       };
 
-      this.maxDate = {
-        year: this.inputData.dateAfter.getFullYear(),
-        month: this.inputData.dateAfter.getMonth() + 1,
-        day: this.inputData.dateAfter.getDate()
-      };
     }
   }
 
+  isWeekend(date: NgbDateStruct) {
+    const d = new Date(date.year, date.month - 1, date.day);
+    return d.getDay() === 0 || d.getDay() === 6;
+  }
+  isWeekday(date: NgbDateStruct) {
+    const d = new Date(date.year, date.month - 1, date.day);
+    return d.getDay() > 0 && d.getDay() < 6;
+  }
+  isHidden(date: NgbDateStruct) {
+    const d = new Date(date.year, date.month - 1, date.day);
+    return d < this.inputData.startDate || d > this.inputData.dateAfter;
+  }
 }

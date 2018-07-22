@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="container" style="width: 400px">
-    <h1>Calendar Data</h1>
+  <h1>Calendar Data</h1>
+  <div class="row">
     <form (ngSubmit)="onSubmit()" #calendarForm="ngForm">
       <div class="form-group">
         <label for="startDate">Start Date:</label>
@@ -14,7 +14,7 @@
             <img src="../../assets/img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
           </button>
         </div>
-        <div [hidden]="startDate.valid || startDate.pristine"
+        <div [hidden]="startDate.valid"
              class="alert alert-danger">
           Start Date is required
         </div>
@@ -41,11 +41,19 @@
 
     </form>
   </div>
-  <pre>Model: {{ inputData | json }}</pre>
-  <pre>State: {{ startDate.status }}</pre>
-  <div [hidden]="!inputData.dateAfter" class="container">
-    <ngb-datepicker #dp [displayMonths]="inputData.monthsAfter"
+  <!--<pre>Model: {{ inputData | json }}</pre>-->
+  <div *ngIf="inputData.dateAfter && (inputData.dateAfter >= inputData.startDate)" class="row" style="overflow-x: auto;">
+    <h1>Result</h1>
+    <ngb-datepicker #dp [displayMonths]="inputData.monthsAfter" [navigation]="'none'"
+                    [firstDayOfWeek]="7" [dayTemplate]="customDay"
                     [minDate]="minDate" [maxDate]="maxDate">
     </ngb-datepicker>
+    <ng-template  #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected"
+                 let-disabled="disabled" let-focused="focused">
+  <span class="custom-day" [class.weekend]="isWeekend(date)" [class.weekday]="isWeekday(date)" [class.focused]="focused"
+        [class.bg-primary]="selected" [class.hidden]="isHidden(date)" [class.text-muted]="disabled">
+    {{ date.day }}
+  </span>
+    </ng-template>
   </div>
 </div>
