@@ -3,4 +3,5 @@ export class InputData {
   numberOfDays: number;
   countryCode: string;
   dateAfter: Date;
+  monthsAfter: number;
 }
