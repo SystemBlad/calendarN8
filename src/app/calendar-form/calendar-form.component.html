@@ -16,7 +16,7 @@
         </div>
         <div [hidden]="startDate.valid"
              class="alert alert-danger">
-          Start Date is required
+          Required field
         </div>
       </div>
 
@@ -26,15 +26,19 @@
                required [(ngModel)]="inputData.numberOfDays" #numberOfDays="ngModel" min="1">
         <div [hidden]="numberOfDays.valid"
              class="alert alert-danger">
-          Invalid Number of days
+          Required field
         </div>
       </div>
 
       <div class="form-group">
         <hr/>
         <label for="countryCode">Country Code:</label>
-        <input maxlength="15" type="text" class="form-control" id="countryCode" name="countryCode"
-               required [(ngModel)]="inputData.countryCode">
+        <input maxlength="2" type="text" class="form-control" id="countryCode" name="countryCode"
+               required [(ngModel)]="inputData.countryCode" #countryCode="ngModel">
+        <div [hidden]="countryCode.valid"
+             class="alert alert-danger">
+          Required field
+        </div>
       </div>
 
       <button type="submit" class="btn btn-success" [disabled]="!calendarForm.form.valid">Submit</button>
@@ -43,7 +47,7 @@
   </div>
   <!--<pre>Model: {{ inputData | json }}</pre>-->
   <div *ngIf="inputData.dateAfter && (inputData.dateAfter >= inputData.startDate)" class="row" style="overflow-x: auto;">
-    <h1>Result</h1>
+    <h1>Result:  </h1>
     <ngb-datepicker #dp [displayMonths]="inputData.monthsAfter" [navigation]="'none'"
                     [firstDayOfWeek]="7" [dayTemplate]="customDay"
                     [minDate]="minDate" [maxDate]="maxDate">

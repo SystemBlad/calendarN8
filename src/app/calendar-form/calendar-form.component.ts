@@ -14,9 +14,9 @@ export class CalendarFormComponent implements OnInit {
   inputData: InputData = {
     startDate: null,
     numberOfDays: null,
-    countryCode: 'US',
+    countryCode: null,
     dateAfter: null,
-    monthsAfter: 0,
+    monthsAfter: null,
   };
 
   maxDate = {
@@ -72,10 +72,12 @@ export class CalendarFormComponent implements OnInit {
     const d = new Date(date.year, date.month - 1, date.day);
     return d.getDay() === 0 || d.getDay() === 6;
   }
+
   isWeekday(date: NgbDateStruct) {
     const d = new Date(date.year, date.month - 1, date.day);
     return d.getDay() > 0 && d.getDay() < 6;
   }
+
   isHidden(date: NgbDateStruct) {
     const d = new Date(date.year, date.month - 1, date.day);
     return d < this.inputData.startDate || d > this.inputData.dateAfter;
