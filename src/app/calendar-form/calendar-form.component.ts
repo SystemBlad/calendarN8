@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {InputData} from '../input-data';
 import {NgbDateAdapter, NgbDateNativeAdapter} from '@ng-bootstrap/ng-bootstrap';
 
-const now = new Date();
+
 @Component({
   selector: 'app-calendar-form',
   templateUrl: './calendar-form.component.html',
@@ -12,16 +12,26 @@ const now = new Date();
 
 export class CalendarFormComponent implements OnInit {
   inputData: InputData = {
-    startDate: now,
-    numberOfDays: 0,
+    startDate: new Date(),
+    numberOfDays: null,
     countryCode: 'US',
-    dateAfter: now
+    dateAfter: null
   };
 
   constructor() {
   }
 
   ngOnInit() {
+  }
+
+  onSubmit() {
+    if (this.inputData.numberOfDays < 1 || this.inputData.numberOfDays  > 1000000) {
+      this.inputData.numberOfDays = null;
+    } else {
+      const dateAfter = new Date();
+      dateAfter.setDate(this.inputData.startDate.getDate() + this.inputData.numberOfDays);
+      this.inputData.dateAfter = dateAfter;
+    }
   }
 
 }
