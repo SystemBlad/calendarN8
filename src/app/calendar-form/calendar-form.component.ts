@@ -46,14 +46,16 @@ export class CalendarFormComponent implements OnInit {
       this.inputData.numberOfDays = null;
     } else {
       this.loading = true;
-      this.http.get('https://date.nager.at/api/v1/get/' + this.inputData.countryCode + '/' +
-        this.inputData.startDate.getFullYear()).subscribe((data: any) => {
-          console.log(data);
+      // const url = 'https://date.nager.at/api/v1/get/' + this.inputData.countryCode + '/' +
+      //   this.inputData.startDate.getFullYear();
+      const url = '../../assets/holidays.json';
+      this.http.get(url).subscribe((data: any) => {
           this.holidaysArray = data;
           this.daysAfterCalculation();
           this.loading = false;
         },
         err => {
+          this.daysAfterCalculation();
           this.loading = false;
           alert('An error has occurred. Please try again later');
         });
@@ -103,8 +105,9 @@ export class CalendarFormComponent implements OnInit {
   }
 
   isHoliday(date: NgbDateStruct) {
-    if (this.holidaysArray && this.holidaysArray.filter(element => (date.year.toString() === element.date.substring(0, 4)
-      && (date.month) === Number(element.date.substring(5, 7))
+    if (this.holidaysArray && this.holidaysArray.filter(element => (
+      // date.year.toString() === element.date.substring(0, 4)
+       (date.month) === Number(element.date.substring(5, 7))
       && (date.day) === Number(element.date.substring(8, 10))
     )).length > 0
     ) {
