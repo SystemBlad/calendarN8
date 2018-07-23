@@ -46,13 +46,17 @@ export class CalendarFormComponent implements OnInit {
       this.inputData.numberOfDays = null;
     } else {
       this.loading = true;
-      this.http.get('http://date.nager.at/api/v1/get/' + this.inputData.countryCode + '/' +
+      this.http.get('https://date.nager.at/api/v1/get/' + this.inputData.countryCode + '/' +
         this.inputData.startDate.getFullYear()).subscribe((data: any) => {
-        console.log(data);
-        this.holidaysArray = data;
-        this.daysAfterCalculation();
-        this.loading = false;
-      });
+          console.log(data);
+          this.holidaysArray = data;
+          this.daysAfterCalculation();
+          this.loading = false;
+        },
+        err => {
+          this.loading = false;
+          alert('An error has occurred. Please try again later');
+        });
 
     }
   }
