@@ -14,8 +14,13 @@
 .weekday {
   background-color: #71dd8a;
 }
+
 .hidden {
   display: none;
+}
+
+.holiday {
+  background-color: #64a5d6;
 }
 
 [_nghost-c2] {

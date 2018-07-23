@@ -33,7 +33,7 @@
       <div class="form-group">
         <hr/>
         <label for="countryCode">Country Code:</label>
-        <input maxlength="2" type="text" class="form-control" id="countryCode" name="countryCode"
+        <input style="text-transform:uppercase" maxlength="2" type="text" class="form-control" id="countryCode" name="countryCode"
                required [(ngModel)]="inputData.countryCode" #countryCode="ngModel">
         <div [hidden]="countryCode.valid"
              class="alert alert-danger">
@@ -41,21 +41,25 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-success" [disabled]="!calendarForm.form.valid">Submit</button>
+      <button type="submit" class="btn btn-success" [disabled]="!calendarForm.form.valid">{{loading?'Working...':'Submit'}}</button>
 
     </form>
   </div>
-  <!--<pre>Model: {{ inputData | json }}</pre>-->
+<!--
+  <pre>Model: {{ inputData | json }}</pre>
+  <pre>Model: {{ minDate | json }}</pre>
+  <pre>Model: {{ maxDate | json }}</pre>
+-->
+  <h3>Result:  (Holidays in blue)   </h3>
   <div *ngIf="inputData.dateAfter && (inputData.dateAfter >= inputData.startDate)" class="row" style="overflow-x: auto;">
-    <h1>Result:  </h1>
     <ngb-datepicker #dp [displayMonths]="inputData.monthsAfter" [navigation]="'none'"
                     [firstDayOfWeek]="7" [dayTemplate]="customDay"
                     [minDate]="minDate" [maxDate]="maxDate">
     </ngb-datepicker>
     <ng-template  #customDay let-date="date" let-currentMonth="currentMonth" let-selected="selected"
                  let-disabled="disabled" let-focused="focused">
-  <span class="custom-day" [class.weekend]="isWeekend(date)" [class.weekday]="isWeekday(date)" [class.focused]="focused"
-        [class.bg-primary]="selected" [class.hidden]="isHidden(date)" [class.text-muted]="disabled">
+  <span class="custom-day" [class.weekend]="isWeekend(date)" [class.hidden]="isHidden(date)"  [class.holiday]="isHoliday(date)" [class.weekday]="isWeekday(date)" [class.focused]="focused"
+        [class.bg-primary]="selected" [class.text-muted]="disabled">
     {{ date.day }}
   </span>
     </ng-template>
